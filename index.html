@@ -161,6 +161,66 @@
         #mobile-menu:not(.hidden) ~ #menu-button .hamburger-line-top { transform: rotate(45deg) translate(5px, 5px); }
         #mobile-menu:not(.hidden) ~ #menu-button .hamburger-line-middle { opacity: 0; }
         #mobile-menu:not(.hidden) ~ #menu-button .hamburger-line-bottom { transform: rotate(-45deg) translate(7px, -7px); }
+
+        /* Custom styles for Mailchimp form within modal */
+        #mailchimp-modal .mc-field-group {
+            margin-bottom: 1rem;
+        }
+        #mailchimp-modal label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+        #mailchimp-modal input[type="email"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+        #mailchimp-modal .button {
+            background-color: var(--accent-gold);
+            color: var(--earthy-brown-dark);
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block; /* Ensure button styling applies correctly */
+            border: none;
+        }
+        #mailchimp-modal .button:hover {
+            background-color: #c09b2e;
+        }
+        #mailchimp-modal .indicates-required {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        #mailchimp-modal #mce-responses {
+            margin-top: 1rem;
+        }
+        #mailchimp-modal .response {
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border-radius: 0.375rem;
+            display: none;
+        }
+        #mailchimp-modal #mce-error-response {
+            background-color: #ffe0e0;
+            color: #d10000;
+            border: 1px solid #d10000;
+        }
+        #mailchimp-modal #mce-success-response {
+            background-color: #e0ffe0;
+            color: #008000;
+            border: 1px solid #008000;
+        }
+        /* Hide the Mailchimp referral badge for cleaner integration */
+        #mailchimp-modal .refferal_badge {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -209,11 +269,10 @@
       <p class="text-2xl md:text-3xl font-lora italic mb-8">Neo Rysik</p>
       <p class="text-xl md:text-2xl mb-10 leading-relaxed">Passing on life's wisdom: Coming in 2026.</p>
       <div class="space-y-4 sm:space-y-0 sm:space-x-4">
-        <a href="#signup" class="btn-primary py-3 px-8 rounded-lg text-lg transition-colors shadow-md inline-block">Sign Up for Release Updates</a>
-        <a href="#sample" class="btn-secondary border-2 font-bold py-3 px-8 rounded-lg text-lg transition-colors shadow-md inline-block mt-4 sm:mt-0">Get Free Sample Chapters</a>
+        <a href="#" id="open-mailchimp-signup" class="btn-primary py-3 px-8 rounded-lg text-lg transition-colors shadow-md inline-block">Sign Up for Release Updates</a>
+        <a href="#" id="open-mailchimp-sample" class="btn-secondary border-2 font-bold py-3 px-8 rounded-lg text-lg transition-colors shadow-md inline-block mt-4 sm:mt-0">Get Free Sample Chapters</a>
       </div>
     </div>
-    <!-- MODIFIED: Removed central bubble, leaving four. Adjusted positions for balance. -->
     <div class="bubble z-10" style="width: 80px; height: 80px; top: 15%; left: 20%;" data-character="dara"></div>
     <div class="bubble z-10" style="width: 70px; height: 70px; top: 20%; left: 70%;" data-character="yochieFrankie"></div>
     <div class="bubble z-10" style="width: 90px; height: 90px; top: 35%; left: 25%;" data-character="connectedMemories"></div>
@@ -232,36 +291,6 @@
       </div>
     </div>
   </section>
-
- <div id="mc_embed_shell">
-      <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
-  <style type="text/css">
-        #mc_embed_signup{background:#fff; false;clear:left; font:14px Helvetica,Arial,sans-serif; width: 600px;}
-</style>
-<div id="mc_embed_signup">
-    <form action="https://neorysik.us20.list-manage.com/subscribe/post?u=3085d1811493d18b8d221b43d&amp;id=b1c75dde52&amp;f_id=004e75eaf0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
-        <div id="mc_embed_signup_scroll"><h2>Subscribe</h2>
-            <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
-            <div class="mc-field-group"><label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label><input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" value=""></div>
-        <div id="mce-responses" class="clear foot">
-            <div class="response" id="mce-error-response" style="display: none;"></div>
-            <div class="response" id="mce-success-response" style="display: none;"></div>
-        </div>
-    <div aria-hidden="true" style="position: absolute; left: -5000px;">
-        /* real people should not fill this in and expect good things - do not remove this or risk form bot signups */
-        <input type="text" name="b_3085d1811493d18b8d221b43d_b1c75dde52" tabindex="-1" value="">
-    </div>
-        <div class="optionalParent">
-            <div class="clear foot">
-                <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
-                <p style="margin: 0px auto;"><a href="http://eepurl.com/jjrHx-" title="Mailchimp - email marketing made easy and fun"><span style="display: inline-block; background-color: transparent; border-radius: 4px;"><img class="refferal_badge" src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg" alt="Intuit Mailchimp" style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a></p>
-            </div>
-        </div>
-    </div>
-</form>
-</div>
-<script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script><script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';fnames[6]='COMPANY';ftypes[6]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script></div>
-
 
   <section id="about-author" class="py-16 md:py-24 bg-section-light">
     <div class="container mx-auto px-6 lg:px-8">
@@ -286,13 +315,11 @@
       <h2 class="text-3xl md:text-4xl font-bold font-lora mb-6">Join the Newsletter</h2>
       <p class="text-xl mb-8 max-w-2xl mx-auto leading-relaxed text-cream-yellow">Sign up for Neo Rysik's general newsletter to receive occasional updates, blog posts, and behind-the-scenes content.</p>
       <div class="max-w-lg mx-auto">
-          <form>
-              <div class="flex flex-col sm:flex-row gap-4">
-                <input class="flex-grow p-3 rounded-md text-slate-800 focus:ring-2 focus:ring-accent-gold focus:border-accent-gold outline-none" required type="email" placeholder="Enter your email address">
-                <button class="btn-primary py-3 px-6 rounded-md transition-colors shadow-md" type="submit">Subscribe</button>
-              </div>
-              <p class="text-sm mt-4 text-sky-blue-light">We respect your privacy. Unsubscribe at any time.</p>
+          <form id="newsletter-signup-form" class="flex flex-col sm:flex-row gap-4">
+            <input class="flex-grow p-3 rounded-md text-slate-800 focus:ring-2 focus:ring-accent-gold focus:border-accent-gold outline-none" required type="email" placeholder="Enter your email address" id="newsletter-email-input">
+            <button class="btn-primary py-3 px-6 rounded-md transition-colors shadow-md" type="submit">Subscribe</button>
           </form>
+          <p class="text-sm mt-4 text-sky-blue-light">We respect your privacy. Unsubscribe at any time.</p>
       </div>
     </div>
   </section>
@@ -305,186 +332,4 @@
     </div>
   </section>
 
-  <section id="contact" class="py-16 md:py-24 bg-cream-yellow bg-opacity-50">
-    <div class="container mx-auto px-6 lg:px-8 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold font-lora text-slate-700 mb-12">Get In Touch</h2>
-      <p class="text-lg text-slate-600 mb-8 max-w-xl mx-auto">For inquiries, media requests, or just to say hello, please use the contact form below (form functionality to be added).</p>
-      <div class="text-slate-500 italic">(Contact form or details coming soon)</div>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer py-12">
-  <div class="container mx-auto px-6 lg:px-8 text-center">
-    <div class="mb-4">
-      <a href="https://www.instagram.com/neorysik/" target="_blank" rel="noopener noreferrer" class="mx-2">Instagram</a>
-      <a href="#" class="mx-2">Goodreads</a>
-    </div>
-    <p class="text-sm mb-2">&copy;
-      <span id="currentYear"></span> Neo Rysik. All Rights Reserved.
-    </p>
-    <p class="text-sm">
-      <a href="#">Privacy Policy</a> |
-      <a href="#">Terms of Service</a>
-    </p>
-    <p class="text-xs mt-4 opacity-70">Website designed with inspiration from the In Memory cover art.</p>
-  </div>
-</footer>
-
-<div id="character-modal" class="modal fixed inset-0 bg-black bg-opacity-80 items-center justify-center p-4 z-[100]">
-  <div id="modal-content-wrapper" class="bg-white p-6 sm:p-8 rounded-lg shadow-xl max-w-2xl w-full relative transform transition-all duration-300 ease-out scale-95 opacity-0">
-    <button id="close-modal" class="absolute top-3 right-3 sm:top-4 sm:right-4 text-slate-500 hover:text-slate-900 text-3xl leading-none z-10">&times;</button>
-    <div class="modal-content-area">
-      <h3 id="modal-character-name" class="text-2xl sm:text-3xl font-bold font-lora text-earthy-brown-dark mb-4">Character Name</h3>
-      <div id="modal-image-container" class="modal-image-container hidden">
-          <img id="modal-character-image" src="" alt="Character Image" />
-      </div>
-      <div id="modal-video-container" class="modal-video-container hidden">
-        <video id="modal-video-player" class="w-full h-auto" controls></video>
-      </div>
-      <div id="modal-character-vignette" class="text-slate-600 leading-relaxed text-sm sm:text-base">
-        <p>This is where the short vignette or teaser about the character will appear...</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-    // Mobile menu toggle
-    const menuButton = document.getElementById('menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (menuButton && mobileMenu) {
-        menuButton.addEventListener('click', () => {
-            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true' || false;
-            menuButton.setAttribute('aria-expanded', !isExpanded);
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
-
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            if (this.hash !== "" && document.getElementById(this.hash.substring(1))) {
-                e.preventDefault();
-                document.querySelector(this.hash).scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-
-    // Current year
-    const currentYearEl = document.getElementById('currentYear');
-    if (currentYearEl) {
-        currentYearEl.textContent = new Date().getFullYear();
-    }
-
-    // Modal
-    const bubbles = document.querySelectorAll('.bubble');
-    const modal = document.getElementById('character-modal');
-    const modalContentWrapper = document.getElementById('modal-content-wrapper');
-    const closeModalButton = document.getElementById('close-modal');
-    const modalCharacterName = document.getElementById('modal-character-name');
-    const modalCharacterVignetteEl = document.getElementById('modal-character-vignette');
-    const modalImageContainer = document.getElementById('modal-image-container');
-    const modalCharacterImageEl = document.getElementById('modal-character-image');
-    const modalVideoContainer = document.getElementById('modal-video-container');
-    const modalVideoPlayer = document.getElementById('modal-video-player');
-    if(modalVideoContainer) modalVideoContainer.style.display = 'none';
-
-    // MODIFIED: Removed placeholder data, leaving 4 characters
-    const characterData = {
-        "dara": {
-            name: "Leyna",
-            vignette: "Leyna, a storyteller and future neurobiologist, at the naming of her baby brother.",
-            imageUrl: "https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/Dara%20naming%201.png"
-        },
-        "yochieFrankie": {
-            name: "Yochie & Frankie",
-            vignette: "Yochie, and Frankie as kids, sharing apricots and almonds.",
-            imageUrl: "https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/yochie%26frankie_1.png"
-        },
-        "shanieYochie": {
-            name: "Shanie & Yochie",
-            vignette: "Yochie, a quantum physicist, builds trust with Shanie as they bridge dimensions of understanding.",
-            imageUrl: "https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/shanie%26yochie.png"
-        },
-        "connectedMemories": {
-            name: "Connected Memories",
-            vignette: "The threads that link us all, seen and unseen, across time and space.",
-            imageUrl: "https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/connected%20memories.png"
-        }
-    };
-
-    if (bubbles.length > 0 && modal && modalContentWrapper && closeModalButton && modalCharacterName && modalCharacterVignetteEl && modalImageContainer && modalCharacterImageEl) {
-        bubbles.forEach(bubble => {
-            bubble.addEventListener('click', () => {
-                const characterId = bubble.dataset.character;
-                const data = characterData[characterId];
-
-                if (data) {
-                    modalCharacterName.textContent = data.name;
-                    if (data.imageUrl && data.imageUrl.trim() !== "") {
-                        modalCharacterImageEl.src = data.imageUrl;
-                        modalCharacterImageEl.alt = data.name;
-                        modalImageContainer.classList.remove('hidden');
-                    } else {
-                        modalImageContainer.classList.add('hidden');
-                        modalCharacterImageEl.src = "";
-                    }
-                    if (data.vignette && data.vignette.trim() !== "") {
-                        modalCharacterVignetteEl.innerHTML = `<p>${data.vignette}</p>`;
-                        modalCharacterVignetteEl.classList.remove('hidden');
-                    } else {
-                        modalCharacterVignetteEl.innerHTML = `<p>More about ${data.name} coming soon.</p>`;
-                        modalCharacterVignetteEl.classList.remove('hidden');
-                    }
-                } else {
-                    modalCharacterName.textContent = "Unknown Memory";
-                    modalImageContainer.classList.add('hidden');
-                    modalCharacterImageEl.src = "";
-                    modalCharacterVignetteEl.innerHTML = "<p>Details for this memory are yet to be uncovered.</p>";
-                    modalCharacterVignetteEl.classList.remove('hidden');
-                }
-
-                modal.classList.add('is-open');
-                setTimeout(() => {
-                    modalContentWrapper.classList.remove('scale-95', 'opacity-0');
-                    modalContentWrapper.classList.add('scale-100', 'opacity-100');
-                }, 20);
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        function closeModal() {
-            modalContentWrapper.classList.remove('scale-100', 'opacity-100');
-            modalContentWrapper.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                 modal.classList.remove('is-open');
-                 document.body.style.overflow = 'auto';
-                 modalCharacterImageEl.src = "";
-                 modalImageContainer.classList.add('hidden');
-                 if(modalVideoPlayer) {
-                    modalVideoPlayer.pause();
-                    modalVideoPlayer.currentTime = 0;
-                    modalVideoPlayer.src = "";
-                 }
-            }, 300);
-        }
-
-        closeModalButton.addEventListener('click', closeModal);
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && modal.classList.contains('is-open')) {
-                closeModal();
-            }
-        });
-    } else {
-        console.error("One or more essential modal elements are missing from the DOM.");
-    }
-</script>
-
-</body>
-</html>
+  <section id="contact" class="py-16
