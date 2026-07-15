@@ -9,3 +9,4 @@
 .author-grid{grid-template-columns:minmax(220px,.68fr) minmax(0,1.32fr)}.author img{max-width:390px;justify-self:center}
 @media(max-width:760px){.author-grid{grid-template-columns:1fr}.author img{max-width:300px}}
 .author img{max-width:292px}@media(max-width:760px){.author img{max-width:225px}}
+.author img{display:block;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;object-position:center;align-self:center;justify-self:center}
