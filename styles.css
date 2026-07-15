@@ -4,3 +4,4 @@
 .logo-frame{min-height:300px}.logo-frame img{width:min(100%,180px);max-height:270px}
 .cover-stage img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;object-position:center}
 .hero{overflow:visible}.cover-stage{position:relative;display:flex;align-items:center;justify-content:center;overflow:visible;min-width:0;min-height:0}.cover-stage img{position:static;width:min(100%,540px);height:auto;aspect-ratio:auto;max-width:100%;max-height:none;overflow:visible;clip:auto;clip-path:none;filter:drop-shadow(0 30px 28px rgba(53,24,13,.25))}
+.imprint-grid{gap:clamp(28px,4vw,56px)}.logo-frame{min-height:340px;justify-content:flex-end}.logo-frame img{width:min(100%,270px);max-height:405px}
