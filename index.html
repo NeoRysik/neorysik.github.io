@@ -1,335 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Rysik - Author of In Memory</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        /* --- Custom Styles & Color Palette from Cover Art --- */
-        :root {
-            --sky-blue-light: #b0d4e3;
-            --sky-blue-medium: #a0c4e2;
-            --cream-yellow: #f3e9d2;
-            --earthy-brown-light: #c3b091;
-            --earthy-brown-dark: #795548;
-            --tree-green: #4a7c59;
-            --text-dark: #3a3a3a;
-            --text-light: #f8f9fa;
-            --accent-gold: #d4af37;
-            --bubble-base: rgba(220, 230, 240, 0.25);
-            --bubble-border: rgba(220, 230, 240, 0.5);
-            --bubble-hover: rgba(220, 230, 240, 0.6);
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--cream-yellow);
-            color: var(--text-dark);
-        }
-        .font-lora {
-            font-family: 'Lora', serif;
-        }
-        .hero-section {
-            background-image: url('https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/Site%20Background%209.png');
-            background-size: cover;
-            background-position: center;
-            min-height: 90vh;
-            position: relative;
-        }
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.45);
-            z-index: 1;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-        @keyframes floatPulse {
-            0%, 100% {
-                transform: translateY(0) scale(1);
-                opacity: 0.8;
-            }
-            50% {
-                transform: translateY(-15px) scale(1.05);
-                opacity: 1.0;
-            }
-        }
-        .bubble {
-            /* MODIFIED: Bubbles are semi-transparent by default */
-            background-color: var(--bubble-base);
-            border: 2px solid var(--bubble-border);
-            border-radius: 50%;
-            position: absolute;
-            cursor: pointer;
-            transition: all 0.4s ease; /* Animate all properties smoothly */
-            animation: floatPulse 7s ease-in-out infinite;
-            box-shadow: 0 0 10px var(--bubble-base), 0 0 3px var(--bubble-border) inset;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        .bubble:hover {
-            transform: scale(1.20) !important;
-            border-color: var(--cream-yellow);
-            animation-play-state: paused;
-            box-shadow: 0 0 25px var(--bubble-hover), 0 0 8px var(--bubble-border) inset;
-            /* MODIFIED: Hide the base color on hover to show image clearly */
-            background-color: transparent;
-        }
-
-        /* --- MODIFIED: Images now only appear on hover --- */
-        .bubble[data-character="dara"]:hover {
-            background-image: url('https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/Dara%20naming%201.png');
-        }
-        .bubble[data-character="yochieFrankie"]:hover {
-            background-image: url('https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/yochie%26frankie_1.png');
-        }
-        .bubble[data-character="shanieYochie"]:hover {
-            background-image: url('https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/shanie%26yochie.png');
-        }
-        .bubble[data-character="connectedMemories"]:hover {
-            background-image: url('https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/connected%20memories.png');
-        }
-
-        .bubble:nth-child(1) { animation-delay: 0s; }
-        .bubble:nth-child(2) { animation-delay: -1.5s; }
-        .bubble:nth-child(3) { animation-delay: -3s; }
-        .bubble:nth-child(4) { animation-delay: -4.5s; }
-
-        .modal { display: none; }
-        .modal.is-open { display: flex; }
-        .modal-content-area { width: 100%; }
-
-        .modal-image-container {
-            width: 100%;
-            max-height: 70vh;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            text-align: center;
-        }
-        .modal-image-container img {
-            max-width: 100%;
-            max-height: 70vh;
-            height: auto;
-            display: inline-block;
-            border-radius: 0.25rem;
-        }
-        .modal-video-container { display: none; }
-
-        .site-header {
-            background-color: var(--earthy-brown-dark);
-            color: var(--text-light);
-        }
-        .site-header a:hover { color: var(--sky-blue-light); }
-        .site-footer {
-            background-color: var(--earthy-brown-dark);
-            color: var(--sky-blue-light);
-        }
-        .site-footer a { color: var(--text-light); }
-        .site-footer a:hover { color: var(--accent-gold); }
-        .btn-primary {
-            background-color: var(--accent-gold);
-            color: var(--earthy-brown-dark);
-            font-weight: bold;
-        }
-        .btn-primary:hover { background-color: #c09b2e; }
-        .btn-secondary {
-            border-color: var(--text-light);
-            color: var(--text-light);
-        }
-        .btn-secondary:hover {
-            background-color: var(--text-light);
-            color: var(--sky-blue-medium);
-        }
-        .btn-info {
-            background-color: var(--tree-green);
-            color: var(--text-light);
-        }
-        .btn-info:hover { background-color: #386641; }
-        .bg-section-light { background-color: #fff; }
-        .bg-section-tint { background-color: var(--sky-blue-light); opacity: 0.1; }
-        .bg-section-dark-accent { background-color: var(--tree-green); color: var(--text-light); }
-        .hamburger-line { transition: all 0.3s ease-in-out; }
-        #mobile-menu.hidden ~ #menu-button .hamburger-line-top { transform: none; }
-        #mobile-menu.hidden ~ #menu-button .hamburger-line-middle { opacity: 1; }
-        #mobile-menu.hidden ~ #menu-button .hamburger-line-bottom { transform: none; }
-        #mobile-menu:not(.hidden) ~ #menu-button .hamburger-line-top { transform: rotate(45deg) translate(5px, 5px); }
-        #mobile-menu:not(.hidden) ~ #menu-button .hamburger-line-middle { opacity: 0; }
-        #mobile-menu:not(.hidden) ~ #menu-button .hamburger-line-bottom { transform: rotate(-45deg) translate(7px, -7px); }
-
-        /* Custom styles for Mailchimp form within modal */
-        #mailchimp-modal .mc-field-group {
-            margin-bottom: 1rem;
-        }
-        #mailchimp-modal label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: var(--text-dark);
-        }
-        #mailchimp-modal input[type="email"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 0.375rem;
-            font-size: 1rem;
-        }
-        #mailchimp-modal .button {
-            background-color: var(--accent-gold);
-            color: var(--earthy-brown-dark);
-            font-weight: bold;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            display: inline-block; /* Ensure button styling applies correctly */
-            border: none;
-        }
-        #mailchimp-modal .button:hover {
-            background-color: #c09b2e;
-        }
-        #mailchimp-modal .indicates-required {
-            font-size: 0.875rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        #mailchimp-modal #mce-responses {
-            margin-top: 1rem;
-        }
-        #mailchimp-modal .response {
-            padding: 0.75rem;
-            margin-bottom: 0.75rem;
-            border-radius: 0.375rem;
-            display: none;
-        }
-        #mailchimp-modal #mce-error-response {
-            background-color: #ffe0e0;
-            color: #d10000;
-            border: 1px solid #d10000;
-        }
-        #mailchimp-modal #mce-success-response {
-            background-color: #e0ffe0;
-            color: #008000;
-            border: 1px solid #008000;
-        }
-        /* Hide the Mailchimp referral badge for cleaner integration */
-        #mailchimp-modal .refferal_badge {
-            display: none !important;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Neo Rysik | In Memory</title>
+  <meta name="description" content="In Memory, Book One by Neo Rysik: a literary science-fiction novel about memory, ecological grief, and the intelligence we choose to preserve.">
+  <meta property="og:title" content="In Memory — Neo Rysik">
+  <meta property="og:description" content="What would humanity preserve at the end of the world—and who would get to decide?">
+  <meta property="og:image" content="https://www.neorysik.com/assets/in-memory-cover.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.neorysik.com/">
+  <link rel="canonical" href="https://www.neorysik.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"In Memory","author":{"@type":"Person","name":"Neo Rysik"},"bookEdition":"Book One","genre":["Science Fiction","Literary Fiction"],"publisher":{"@type":"Organization","name":"Dor Atid Publishing"}}</script>
 </head>
-<body class="antialiased">
-
-<header class="site-header shadow-lg sticky top-0 z-50">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
-      <div class="flex-shrink-0">
-        <a href="#" class="text-3xl font-bold font-lora transition-colors">Neo Rysik</a>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav-wrap">
+    <nav class="nav shell" aria-label="Main navigation">
+      <a class="wordmark" href="#top" aria-label="Neo Rysik home">NEO RYSIK</a>
+      <button class="menu" aria-expanded="false" aria-controls="nav-links">Menu</button>
+      <div class="nav-links" id="nav-links">
+        <a href="#book">The book</a><a href="#author">Author</a><a href="#imprint">Dor Atid</a><a href="#sample">Free chapters</a>
       </div>
-      <nav class="hidden md:flex space-x-6 lg:space-x-8 items-center">
-        <a href="#" class="text-lg transition-colors px-3 py-2 rounded-md">Home</a>
-        <a href="#about-author" class="text-lg transition-colors px-3 py-2 rounded-md">About the Author</a>
-        <a href="#about-book" class="text-lg transition-colors px-3 py-2 rounded-md">In Memory (Book)</a>
-        <a href="#news" class="text-lg transition-colors px-3 py-2 rounded-md">News</a>
-        <a href="#contact" class="text-lg transition-colors px-3 py-2 rounded-md">Contact</a>
-      </nav>
-      <div class="md:hidden flex items-center">
-        <button id="menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
-            <span class="sr-only">Open main menu</span>
-            <div class="space-y-1.5">
-                <span class="hamburger-line hamburger-line-top block w-6 h-0.5 bg-current"></span>
-                <span class="hamburger-line hamburger-line-middle block w-6 h-0.5 bg-current"></span>
-                <span class="hamburger-line hamburger-line-bottom block w-6 h-0.5 bg-current"></span>
-            </div>
-        </button>
-      </div>
-    </div>
-  </div>
-  <div id="mobile-menu" class="md:hidden hidden bg-slate-700 border-t border-slate-600">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-600">Home</a>
-      <a href="#about-author" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-600">About the Author</a>
-      <a href="#about-book" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-600">In Memory (Book)</a>
-      <a href="#news" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-600">News</a>
-      <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-600">Contact</a>
-    </div>
-  </div>
-</header>
+    </nav>
+  </header>
 
-<main>
-  <section class="hero-section text-white flex flex-col items-center justify-center text-center py-20 px-4 relative overflow-hidden">
-    <div class="hero-overlay"></div>
-    <div class="hero-content max-w-3xl">
-      <h1 class="text-5xl md:text-7xl font-bold font-lora mb-4 leading-tight">IN MEMORY</h1>
-      <p class="text-2xl md:text-3xl font-lora italic mb-8">Neo Rysik</p>
-      <p class="text-xl md:text-2xl mb-10 leading-relaxed">Passing on life's wisdom: Coming in 2026.</p>
-      <div class="space-y-4 sm:space-y-0 sm:space-x-4">
-        <a href="#" id="open-mailchimp-signup" class="btn-primary py-3 px-8 rounded-lg text-lg transition-colors shadow-md inline-block">Sign Up for Release Updates</a>
-        <a href="#" id="open-mailchimp-sample" class="btn-secondary border-2 font-bold py-3 px-8 rounded-lg text-lg transition-colors shadow-md inline-block mt-4 sm:mt-0">Get Free Sample Chapters</a>
-      </div>
-    </div>
-    <div class="bubble z-10" style="width: 80px; height: 80px; top: 15%; left: 20%;" data-character="dara"></div>
-    <div class="bubble z-10" style="width: 70px; height: 70px; top: 20%; left: 70%;" data-character="yochieFrankie"></div>
-    <div class="bubble z-10" style="width: 90px; height: 90px; top: 35%; left: 25%;" data-character="connectedMemories"></div>
-    <div class="bubble z-10" style="width: 60px; height: 60px; top: 40%; left: 65%;" data-character="shanieYochie"></div>
-  </section>
-
-  <section id="about-book" class="py-16 md:py-24 bg-section-light">
-    <div class="container mx-auto px-6 lg:px-8">
-      <h2 class="text-3xl md:text-4xl font-bold font-lora text-center text-slate-700 mb-12">About In Memory</h2>
-      <div class="max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed space-y-6">
-        <p>In Memory is an upcoming novel by Neo Rysik, set to be released in 2026. It is a story of hope for the survival of Earth's wisdom, weaving minds and machines to envision a future where the wider intelligence of life is harnessed to pass on seeds of wisdom that can survive the imminent collapse of the natural and civilized world.</p>
-        <p>Set in a near-future marked by global catastrophe, IN MEMORY follows a visionary, cross-cultural team establishing Pardés: “A multi-dimensional forest of minds, where intelligence—human, AI, and beyond—grows together, learning and evolving.” Backed by a brilliant billionaire, they build a sanctuary on Lake Superior’s coast, using quantum computing and neural-interface technologies to expand consciousness, blurring the boundaries between individuality, memory, and consciousness. More details, including a full synopsis and character introductions, will be revealed soon.</p>
-        <div class="text-center mt-12">
-          <a href="#" class="btn-info font-semibold py-3 px-8 rounded-lg text-lg transition-colors shadow-md">Learn More About the Book (Full Page Coming Soon)</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="about-author" class="py-16 md:py-24 bg-section-light">
-    <div class="container mx-auto px-6 lg:px-8">
-      <h2 class="text-3xl md:text-4xl font-bold font-lora text-center text-slate-700 mb-12">Coming in 2026</h2>
-      <div class="flex flex-col md:flex-row items-center max-w-4xl mx-auto">
-        <div class="md:w-1/3 mb-8 md:mb-0 md:mr-12 flex-shrink-0">
-          <img class="rounded-lg shadow-xl mx-auto w-64 md:w-full h-auto" src="https://raw.githubusercontent.com/NeoRysik/neorysik.github.io/main/Book_image.png" alt="In Memory Book Image">
-        </div>
-        <div class="md:w-2/3 text-lg text-slate-600 leading-relaxed space-y-4">
-          <p>Neo Rysik is a new voice in speculative fiction. A scholar of ancient traditions as well as modern technology, draws upon their experiences as a nuclear engineering student at the University of Michigan, years of practice as Vipassana meditator, and a lifelong exploration of spritiual traditions. All these and more inform this exploration of technology, consciousness, and ethics.</p>
-          <p>In Memory is Neo's debut novel, born from a deep desire to pass on the wisdom of old onto the generations to come.</p>
-          <div class="text-center md:text-left mt-8">
-            <a href="#" class="bg-earthy-brown-dark hover:bg-opacity-80 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors shadow-md">More About Neo (Full Page Coming Soon)</a>
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">A novel by Neo Rysik</p>
+          <h1>What is worth<br><em>remembering?</em></h1>
+          <p class="lede">As civilization begins to fail, a community on the shores of Lake Superior races to gather the last of life’s wisdom before it goes extinct.</p>
+          <div class="actions">
+            <a class="button primary" href="#buy">Buy <i>In Memory</i></a>
+            <a class="button ghost" href="#sample">Read four chapters free</a>
           </div>
+          <p class="micro">Book One · Literary science fiction · Dor Atid Publishing</p>
+        </div>
+        <div class="cover-stage">
+          <img src="assets/in-memory-cover.jpg?v=8" alt="Cover of In Memory by Neo Rysik, showing a vast tree rooted beside Lake Superior" width="720" height="1082">
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="signup" class="py-16 md:py-24 bg-section-dark-accent">
-    <div class="container mx-auto px-6 lg:px-8 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold font-lora mb-6">Join the Newsletter</h2>
-      <p class="text-xl mb-8 max-w-2xl mx-auto leading-relaxed text-cream-yellow">Sign up for Neo Rysik's general newsletter to receive occasional updates, blog posts, and behind-the-scenes content.</p>
-      <div class="max-w-lg mx-auto">
-          <form id="newsletter-signup-form" class="flex flex-col sm:flex-row gap-4">
-            <input class="flex-grow p-3 rounded-md text-slate-800 focus:ring-2 focus:ring-accent-gold focus:border-accent-gold outline-none" required type="email" placeholder="Enter your email address" id="newsletter-email-input">
-            <button class="btn-primary py-3 px-6 rounded-md transition-colors shadow-md" type="submit">Subscribe</button>
-          </form>
-          <p class="text-sm mt-4 text-sky-blue-light">We respect your privacy. Unsubscribe at any time.</p>
+    <section class="section book" id="book">
+      <div class="shell narrow">
+        <p class="eyebrow">In Memory · Book One</p>
+        <h2>A sanctuary for the inheritance of life</h2>
+        <p class="opening">At Pardés, scientists and visionaries weave human memory, artificial intelligence, and the cognition of other species into a living archive. Their tools can preserve far more than language. They can carry the felt shape of a mind.</p>
+        <p>Yet every act of preservation is also a choice: what belongs in the future, whose wisdom counts, and how much of the self can enter a shared intelligence before its boundaries begin to dissolve?</p>
+        <blockquote>“A multidimensional forest of minds, where intelligence—human, artificial, and beyond—grows together.”</blockquote>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="news" class="py-16 md:py-24 bg-section-light">
-    <div class="container mx-auto px-6 lg:px-8 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold font-lora text-slate-700 mb-12">Latest News</h2>
-      <p class="text-lg text-slate-600 mb-8">Stay tuned for updates, blog posts, and announcements.</p>
-      <div class="text-slate-500 italic">(News section content coming soon)</div>
-    </div>
-  </section>
+    <section class="section sample" id="sample">
+      <div class="shell sample-grid">
+        <div>
+          <p class="eyebrow">A gift for new readers</p>
+          <h2>Begin with the first four chapters</h2>
+          <p>Join Neo Rysik’s occasional newsletter and receive a PDF containing Chapters 1–4 of <i>In Memory</i>. You’ll also hear about readings, essays, and the unfolding world of the trilogy.</p>
+          <ul class="checks"><li>Immediate PDF delivery by email</li><li>Occasional, thoughtful updates</li><li>Unsubscribe whenever you wish</li></ul>
+        </div>
+        <div id="mlb2-43833331" class="ml-subscribe-form ml-subscribe-form-43833331">
+        <form class="signup-card ml-block-form" id="reader-signup" action="https://assets.mailerlite.com/jsonp/2512787/forms/193196965479056785/subscribe" method="post" target="_blank" data-mailerlite-form data-mailerlite-ready="true" aria-label="Get four free chapters">
+          <label for="name">Name <span class="optional">(optional)</span></label>
+          <input id="name" name="fields[name]" autocomplete="name" placeholder="First name, last name, or both">
+          <label for="email">Email address</label>
+          <input id="email" name="fields[email]" type="email" autocomplete="email" required placeholder="you@example.com">
+          <div class="ml-form-recaptcha ml-validate-required">
+            <div class="g-recaptcha" data-sitekey="6Lf1KHQUAAAAAFNKEX1hdSWCS3mRMv4FlFaNslaD"></div>
+          </div>
+          <input type="hidden" name="ml-submit" value="1">
+          <input type="hidden" name="anticsrf" value="true">
+          <button class="button primary wide" type="submit">Send me the chapters</button>
+          <p class="form-note">By subscribing, you agree to receive email from Neo Rysik. Your information is handled by MailerLite under its privacy terms.</p>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+        </div>
+      </div>
+    </section>
 
-  <section id="contact" class="py-16
+    <section class="section author" id="author">
+      <div class="shell author-grid">
+        <img src="author.jpeg" alt="Neo Rysik" width="600" height="600" loading="lazy">
+        <div><p class="eyebrow">About the author</p><h2>Neo Rysik</h2>
+          <p>Neo Rysik writes at the meeting place of ancient wisdom and emerging technology. He studied nuclear engineering, law, theology, and Jewish law, and has worked as an educator, attorney, nonprofit director, and developer of legal AI tools.</p>
+          <p>His fiction explores memory, ecological grief, consciousness, and the fragile inheritance intelligence tries to carry forward. <i>In Memory</i> is his debut novel.</p>
+          <a class="text-link" href="https://www.instagram.com/neorysik/" rel="me noopener" target="_blank">Follow @neorysik on Instagram <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section buy" id="buy">
+      <div class="shell buy-card"><div><p class="eyebrow">Available August 9th</p><h2>Pre-order <i>In Memory</i></h2><p>Pre-order your copy from Amazon and be among the first readers to enter Pardés. More independent and international retailers will be added as distribution expands.</p></div>
+        <div class="retailers"><a class="button primary" href="https://www.amazon.com/s?k=%22In+Memory%22+%22Neo+Rysik%22&i=stripbooks" target="_blank" rel="noopener sponsored">Pre-order on Amazon <span>↗</span></a><span class="soon">More retailers coming soon</span></div>
+      </div>
+    </section>
+
+    <section class="section imprint" id="imprint">
+      <div class="shell imprint-grid">
+        <div class="logo-frame"><img src="assets/dor-atid-logo.jpg?v=8" alt="Dor Atid Publishing logo" width="420" height="630" loading="lazy"></div>
+        <div><h2>Dor Atid Publishing</h2><p class="hebrew">דור עתיד · “Future Generation”</p><p>Dor Atid publishes intellectually ambitious stories about the worlds we inherit and the futures we leave behind. It is the independent home of Neo Rysik’s <i>In Memory</i> trilogy.</p><a class="text-link" href="mailto:neorysik@gmail.com?subject=Dor%20Atid%20Publishing">Publishing inquiries <span>→</span></a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="shell footer-grid"><div><span class="wordmark">NEO RYSIK</span><p>Stories for the future of memory.</p></div><div><a href="#book">In Memory</a><a href="#imprint">Dor Atid Publishing</a><a href="mailto:neorysik@gmail.com">Contact</a></div><p class="copyright">© <span id="year"></span> Neo Rysik / Dor Atid Publishing</p></div></footer>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519"></script>
+  <script src="config.js"></script><script src="script.js"></script>
+</body>
+</html>
