@@ -66,16 +66,22 @@
           <p>Join Neo Rysik’s occasional newsletter and receive a PDF containing Chapters 1–4 of <i>In Memory</i>. You’ll also hear about readings, essays, and the unfolding world of the trilogy.</p>
           <ul class="checks"><li>Immediate PDF delivery by email</li><li>Occasional, thoughtful updates</li><li>Unsubscribe whenever you wish</li></ul>
         </div>
-        <form class="signup-card" id="reader-signup" method="post" data-mailerlite-form aria-label="Get four free chapters">
+        <div id="mlb2-43833331" class="ml-subscribe-form ml-subscribe-form-43833331">
+        <form class="signup-card ml-block-form" id="reader-signup" action="https://assets.mailerlite.com/jsonp/2512787/forms/193196965479056785/subscribe" method="post" target="_blank" data-mailerlite-form data-mailerlite-ready="true" aria-label="Get four free chapters">
           <label for="name">Name <span class="optional">(optional)</span></label>
           <input id="name" name="fields[name]" autocomplete="name" placeholder="First name, last name, or both">
           <label for="email">Email address</label>
           <input id="email" name="fields[email]" type="email" autocomplete="email" required placeholder="you@example.com">
-          <input type="hidden" name="signup_source" value="neorysik.com-free-chapters">
+          <div class="ml-form-recaptcha ml-validate-required">
+            <div class="g-recaptcha" data-sitekey="6Lf1KHQUAAAAAFNKEX1hdSWCS3mRMv4FlFaNslaD"></div>
+          </div>
+          <input type="hidden" name="ml-submit" value="1">
+          <input type="hidden" name="anticsrf" value="true">
           <button class="button primary wide" type="submit">Send me the chapters</button>
           <p class="form-note">By subscribing, you agree to receive email from Neo Rysik. Your information is handled by MailerLite under its privacy terms.</p>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
+        </div>
       </div>
     </section>
 
@@ -105,6 +111,8 @@
   </main>
 
   <footer><div class="shell footer-grid"><div><span class="wordmark">NEO RYSIK</span><p>Stories for the future of memory.</p></div><div><a href="#book">In Memory</a><a href="#imprint">Dor Atid Publishing</a><a href="mailto:neorysik@gmail.com">Contact</a></div><p class="copyright">© <span id="year"></span> Neo Rysik / Dor Atid Publishing</p></div></footer>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519"></script>
   <script src="config.js"></script><script src="script.js"></script>
 </body>
 </html>
