@@ -10,3 +10,4 @@
 @media(max-width:760px){.author-grid{grid-template-columns:1fr}.author img{max-width:300px}}
 .author img{max-width:292px}@media(max-width:760px){.author img{max-width:225px}}
 .author img{display:block;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;object-position:center;align-self:center;justify-self:center}
+.ml-subscribe-form{width:100%}.ml-form-recaptcha{margin:1rem 0;min-height:78px}.g-recaptcha{transform-origin:top left}@media(max-width:420px){.g-recaptcha{transform:scale(.78);margin-bottom:-16px}}
