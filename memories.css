@@ -1,0 +1,42 @@
+/* Illustrated memories: contained to the cover, never across the reading copy. */
+.cover-stage.has-memories { padding: 30px 48px 82px; isolation: isolate; }
+.cover-stage.has-memories > img { width: 100%; }
+.has-memories::before { content: ''; position: absolute; inset: 8% 0 15%; z-index: -1; border-radius: 50%; background: radial-gradient(ellipse,rgba(245,223,166,.8),rgba(220,189,127,.16) 52%,transparent 70%); }
+.memory-bubbles { position: absolute; inset: 0 0 65px; pointer-events: none; }
+.memory-bubble { --size: 92px; position: absolute; left: var(--x); top: var(--y); width: var(--size); height: var(--size); padding: 5px; border: 1px solid rgba(255,249,219,.85); border-radius: 50%; background: linear-gradient(140deg,rgba(255,254,236,.9),rgba(228,208,169,.2) 48%,rgba(137,178,169,.4)); box-shadow: inset 1px 1px 8px rgba(255,255,255,.85),inset -3px -3px 12px rgba(129,163,164,.3),0 7px 30px rgba(98,69,35,.18),0 0 24px rgba(255,244,210,.8); cursor: pointer; pointer-events: auto; animation: memory-drift var(--duration) var(--delay) ease-in-out infinite; transform-origin: center; touch-action: manipulation; }
+.cover-stage .memory-bubble img { position: static; display: block; width: 100%; height: 100%; max-width: none; max-height: none; aspect-ratio: 1; object-fit: cover; border-radius: 50%; filter: saturate(.78) sepia(.1); opacity: .86; clip-path: none; }
+.memory-bubble::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(ellipse at 29% 19%,rgba(255,255,255,.85),transparent 27%),linear-gradient(130deg,rgba(255,247,201,.28),transparent 47%,rgba(172,213,215,.22)); pointer-events: none; }
+.memory-bubble::after { content: ''; position: absolute; inset: -8px; border-radius: inherit; border: 1px solid rgba(214,160,74,0); pointer-events: none; }
+.memory-bubble:hover, .memory-bubble:focus-visible { animation-play-state: paused; z-index: 4; box-shadow: 0 0 0 4px rgba(255,248,222,.65),0 0 40px rgba(214,160,74,.5); }
+.memory-bubble:focus-visible { outline: 3px solid var(--green); outline-offset: 5px; animation: none; transform: none; opacity: 1; }
+.memory-bubble.is-popping::after { animation: memory-pop .7s ease-out; }
+.memory-bubble-1 { --x: 0%; --y: 63%; --size: 88px; --sway: 8px; }
+.memory-bubble-2 { --x: 73%; --y: 61%; --size: 106px; --sway: -10px; }
+.memory-bubble-3 { --x: 0%; --y: 30%; --size: 96px; --sway: 12px; }
+.memory-bubble-4 { --x: 76%; --y: 27%; --size: 86px; --sway: -8px; }
+.memory-bubble-5 { --x: 20%; --y: 1%; --size: 78px; --sway: -8px; }
+.memory-bubble-6 { --x: 55%; --y: 5%; --size: 90px; --sway: 10px; }
+.memory-bubble-7 { --x: 26%; --y: 81%; --size: 72px; --sway: -6px; }
+.memory-bubble-8 { --x: 61%; --y: 82%; --size: 84px; --sway: 7px; }
+.memory-invitation { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; }
+.memory-invitation p { margin: 0 auto 5px; color: var(--green); font: italic 1.3rem/1.4 'Cormorant Garamond',serif; }
+.memory-pause { padding: 7px 12px; border: 0; background: transparent; color: #725944; font: .7rem/1.4 Inter,sans-serif; letter-spacing: .04em; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.memory-pause:focus-visible, .memory-close:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+.memories-paused .memory-bubble { animation-play-state: paused; }
+@keyframes memory-drift { 0% { opacity: 0; transform: translate(var(--birth-x,0px),var(--birth-y,0px)) scale(.25); } 12% { opacity: .85; } 30% { opacity: 1; transform: translate(var(--sway),8px) scale(.95); } 55% { opacity: 1; transform: translate(0,-22px) scale(1.04); } 83% { opacity: .94; transform: translate(calc(var(--sway) * -1),-47px) scale(1); } 100% { opacity: 0; transform: translate(var(--sway),-75px) scale(.86); } }
+@keyframes memory-pop { from { transform: scale(.9); border-color: rgba(255,242,198,.9); opacity: 1; } to { transform: scale(2); border-color: rgba(214,160,74,.1); opacity: 0; } }
+.memory-open { overflow: hidden; }
+.memory-dialog { width: min(580px,calc(100% - 28px)); max-height: calc(100dvh - 28px); padding: 0; border: 1px solid #d6bc87; border-radius: 14px; background: #fffaf0; color: var(--ink); overflow: auto; box-shadow: 0 25px 100px rgba(13,22,17,.45),0 0 50px rgba(255,229,175,.22); }
+.memory-dialog[open] { animation: memory-unfold .55s ease-out; }
+.memory-dialog::backdrop { background: rgba(17,30,25,.76); backdrop-filter: blur(8px); }
+.memory-window { padding: 28px 32px 22px; text-align: center; position: relative; background: radial-gradient(ellipse at 50% 0,#fff0ca,transparent 60%); }
+.memory-close { position: absolute; right: 10px; top: 8px; width: 42px; height: 42px; padding: 0; border: 0; background: transparent; color: var(--brown); font-size: 30px; cursor: pointer; }
+.memory-kicker { margin: 0 auto 8px; font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--copper); }
+.memory-dialog h2 { max-width: 20ch; margin: 0 auto 18px; font-size: clamp(1.8rem,4vw,2.65rem); line-height: 1.06; font-weight: 500; }
+.memory-scene { display: block; margin: 0 auto; width: auto; height: auto; max-height: 49dvh; max-width: 100%; object-fit: contain; border-radius: 3px; box-shadow: 0 10px 30px rgba(84,32,11,.17); }
+#memory-caption { margin: 14px auto; font-size: .68rem; color: #735e4d; }
+.memory-order { padding: .85rem 1.5rem; }
+.memory-retailer { margin: 9px auto 0; font-size: .65rem; color: #735e4d; }
+@keyframes memory-unfold { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media(max-width:760px) { .cover-stage.has-memories { width: min(440px,100%); justify-self: center; padding: 35px 52px 82px; } .memory-bubble { width: calc(var(--size) * .78); height: calc(var(--size) * .78); } .hero-grid:has(.has-memories) { padding-top: 30px; gap: 28px; } .memory-window { padding: 30px 16px 20px; } .memory-dialog h2 { font-size: 1.9rem; } }
+@media(prefers-reduced-motion:reduce) { .memory-bubble, .memory-dialog[open], .memory-bubble.is-popping::after { animation: none; } .memory-bubble { transform: none; } .memory-dialog::backdrop { backdrop-filter: none; } }

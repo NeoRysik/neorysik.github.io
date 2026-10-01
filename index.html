@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="memories.css">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"In Memory","author":{"@type":"Person","name":"Neo Rysik"},"bookEdition":"Book One","genre":["Science Fiction","Literary Fiction"],"publisher":{"@type":"Organization","name":"Dor Atid Publishing"}}</script>
 </head>
 <body>
@@ -41,8 +42,13 @@
           </div>
           <p class="micro">Book One · Literary science fiction · Dor Atid Publishing</p>
         </div>
-        <div class="cover-stage">
+        <div class="cover-stage" id="memory-stage">
           <img src="assets/in-memory-cover.jpg?v=8" alt="Cover of In Memory by Neo Rysik, showing a vast tree rooted beside Lake Superior" width="720" height="1082">
+          <div class="memory-bubbles" role="group" aria-label="Explore illustrated memories from In Memory"></div>
+          <div class="memory-invitation" hidden>
+            <p>Touch a memory. Let it unfold.</p>
+            <button class="memory-pause" type="button" aria-pressed="false">Pause bubbles</button>
+          </div>
         </div>
       </div>
     </section>
@@ -112,6 +118,18 @@
   <footer><div class="shell footer-grid"><div><span class="wordmark">NEO RYSIK</span><p>Stories for the future of memory.</p></div><div><a href="https://www.instagram.com/neorysik/" target="_blank" rel="me noopener">Neo Rysik on Instagram <span aria-hidden="true">↗</span></a><a href="https://www.facebook.com/profile.php?id=61593203367309" target="_blank" rel="noopener">Dor Atid Publishing on Facebook <span aria-hidden="true">↗</span></a><a href="mailto:neorysik@gmail.com">Contact</a></div><p class="copyright">© <span id="year"></span> Neo Rysik / Dor Atid Publishing</p></div></footer>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519"></script>
+  <dialog class="memory-dialog" aria-labelledby="memory-question" aria-describedby="memory-caption">
+    <div class="memory-window">
+      <button class="memory-close" type="button" aria-label="Close memory">×</button>
+      <p class="memory-kicker">A glimpse into In Memory</p>
+      <h2 id="memory-question"></h2>
+      <img class="memory-scene" alt="" width="800" height="1200">
+      <p id="memory-caption"></p>
+      <a class="button primary memory-order" href="https://shop.ingramspark.com/b/084?params=dE8BSjMU66ip6MGbuAs73HVjQvFBIjuWSnZO4wB2dEp" target="_blank" rel="noopener">Order <i>In Memory</i> Today <span aria-hidden="true">↗</span></a>
+      <p class="memory-retailer">Paperback · IngramSpark · $18</p>
+    </div>
+  </dialog>
   <script src="config.js"></script><script src="script.js"></script>
+  <script src="memories.js"></script>
 </body>
 </html>
