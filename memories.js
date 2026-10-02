@@ -18,12 +18,23 @@
   const pause = stage.querySelector('.memory-pause');
   const close = dialog.querySelector('.memory-close');
   const scene = dialog.querySelector('.memory-scene');
+  const cover = stage.querySelector(':scope > img');
+  const bubbles = [];
   let manuallyPaused = false;
-  let inView = true;
   let activeBubble = null;
+  let flight = null;
+  let reflection = null;
+  let current = 0;
+  let hovering = false;
+  let focused = false;
+  let waitingForCover = false;
+  let generation = 0;
 
   function syncMotion() {
-    stage.classList.toggle('memories-paused', manuallyPaused || reduceMotion.matches || document.hidden || !inView || dialog.open);
+    const stopped = manuallyPaused || document.hidden || dialog.open || hovering || focused;
+    [flight, reflection].forEach(animation => {
+      if (animation) stopped ? animation.pause() : animation.play();
+    });
     pause.setAttribute('aria-pressed', String(manuallyPaused || reduceMotion.matches));
     pause.textContent = reduceMotion.matches ? 'Motion reduced' : manuallyPaused ? 'Resume bubbles' : 'Pause bubbles';
     pause.disabled = reduceMotion.matches;
@@ -31,8 +42,6 @@
 
   function openMemory(memory, bubble) {
     activeBubble = bubble;
-    bubble.classList.remove('is-popping');
-    void bubble.offsetWidth;
     bubble.classList.add('is-popping');
     dialog.querySelector('#memory-question').textContent = memory.question;
     dialog.querySelector('#memory-caption').textContent = `${memory.label} · An illustrated memory from the novel`;
@@ -47,11 +56,10 @@
   memories.forEach((memory, index) => {
     const bubble = document.createElement('button');
     bubble.type = 'button';
-    bubble.className = `memory-bubble memory-bubble-${index + 1}`;
+    bubble.className = 'memory-bubble';
+    bubble.hidden = true;
     bubble.setAttribute('aria-label', `Open illustrated memory: ${memory.label}`);
     bubble.setAttribute('aria-haspopup', 'dialog');
-    bubble.style.setProperty('--delay', `${-index * 2.7}s`);
-    bubble.style.setProperty('--duration', `${22 + index % 3 * 4}s`);
     const image = document.createElement('img');
     image.src = `assets/memories/${memory.id}-bubble.webp`;
     image.alt = '';
@@ -61,37 +69,97 @@
     image.draggable = false;
     bubble.append(image);
     bubble.addEventListener('click', () => openMemory(memory, bubble));
-    bubble.addEventListener('animationend', (event) => {
-      if (event.animationName === 'memory-pop') bubble.classList.remove('is-popping');
-    });
+    bubble.addEventListener('pointerenter', () => { hovering = true; syncMotion(); });
+    bubble.addEventListener('pointerleave', () => { hovering = false; syncMotion(); });
+    bubble.addEventListener('focus', () => { focused = true; syncMotion(); });
+    bubble.addEventListener('blur', () => { focused = false; syncMotion(); });
     field.append(bubble);
+    bubbles.push(bubble);
   });
+
+  // Coordinates of the small illustrated bubbles printed on the book cover.
+  const origins = [[.88,.33], [.14,.23], [.93,.20], [.19,.31], [.84,.14], [.11,.38], [.91,.40], [.22,.17]];
+  function launch() {
+    if (reduceMotion.matches || flight) return;
+    const rect = cover.getBoundingClientRect();
+    const origin = origins[current];
+    const x = rect.left + rect.width * origin[0];
+    const y = rect.top + rect.height * origin[1];
+    // Let a travelling bubble continue while scrolling; launch the next only
+    // when its source on the actual cover is visible again.
+    if (y < 0 || y > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) {
+      waitingForCover = true;
+      return;
+    }
+    waitingForCover = false;
+    const bubble = bubbles[current];
+    const size = window.innerWidth < 760 ? 100 : 136;
+    bubble.style.setProperty('--size', `${size}px`);
+    bubble.hidden = false;
+    const w = window.innerWidth, h = window.innerHeight;
+    const leftward = current % 3 !== 2;
+    const endX = leftward ? -size * 1.6 : w + size * 1.6;
+    const endY = h * [.18, .72, .12, .84][current % 4];
+    const at = (cx, cy, scale) => `translate(${cx - size / 2}px, ${cy - size / 2}px) scale(${scale})`;
+    const duration = 32000;
+    const token = generation;
+    flight = bubble.animate([
+      { offset: 0, transform: at(x, y, .12), opacity: 0 },
+      { offset: .10, transform: at(x - 4, y - 7, .19), opacity: .10 },
+      { offset: .25, transform: at(x + (leftward ? -35 : 20), y - 32, .46), opacity: .30 },
+      { offset: .48, transform: at(w * (leftward ? .56 : .78), h * .37, .88), opacity: .72 },
+      { offset: .72, transform: at(w * (leftward ? .25 : .94), h * (current % 2 ? .60 : .23), 1), opacity: .94 },
+      { offset: 1, transform: at(endX, endY, 1.08), opacity: .85 }
+    ], { duration, delay: 1800, easing: 'linear', fill: 'both' });
+    reflection = bubble.querySelector('img').animate([
+      { offset: 0, opacity: .02, filter: 'saturate(.35) blur(3px)' },
+      { offset: .22, opacity: .10, filter: 'saturate(.45) blur(2px)' },
+      { offset: .55, opacity: .72, filter: 'saturate(.8) blur(0px)' },
+      { offset: 1, opacity: .9, filter: 'saturate(.9) blur(0px)' }
+    ], { duration, delay: 1800, easing: 'ease-in-out', fill: 'both' });
+    flight.onfinish = () => {
+      if (token !== generation) return;
+      bubble.hidden = true;
+      flight.cancel(); reflection.cancel();
+      flight = reflection = null;
+      current = (current + 1) % memories.length;
+      hovering = focused = false;
+      launch();
+    };
+    syncMotion();
+  }
+
+  function configureMotion() {
+    generation++;
+    flight?.cancel(); reflection?.cancel();
+    flight = reflection = null;
+    hovering = focused = false;
+    field.classList.toggle('memory-bubbles-static', reduceMotion.matches);
+    if (reduceMotion.matches) {
+      stage.append(field);
+      bubbles.forEach(b => { b.hidden = false; });
+    } else {
+      document.body.append(field);
+      bubbles.forEach(b => { b.hidden = true; });
+      launch();
+    }
+    syncMotion();
+  }
   stage.classList.add('has-memories');
   stage.querySelector('.memory-invitation').hidden = false;
-  function placeOrigins() {
-    const originX = field.clientWidth * .5;
-    const originY = field.clientHeight * .64;
-    field.querySelectorAll('.memory-bubble').forEach((bubble) => {
-      bubble.style.setProperty('--birth-x', `${originX - bubble.offsetLeft - bubble.offsetWidth / 2}px`);
-      bubble.style.setProperty('--birth-y', `${originY - bubble.offsetTop - bubble.offsetHeight / 2}px`);
-    });
-  }
-  placeOrigins();
-  if ('ResizeObserver' in window) new ResizeObserver(placeOrigins).observe(field);
-  else window.addEventListener('resize', placeOrigins);
   pause.addEventListener('click', () => { manuallyPaused = !manuallyPaused; syncMotion(); });
   close.addEventListener('click', () => dialog.close());
-  dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
   dialog.addEventListener('close', () => {
     document.body.classList.remove('memory-open');
     activeBubble?.classList.remove('is-popping');
-    syncMotion();
     activeBubble?.focus({ preventScroll: true });
+    syncMotion();
   });
   document.addEventListener('visibilitychange', syncMotion);
-  reduceMotion.addEventListener('change', syncMotion);
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; syncMotion(); }, { threshold: 0.05 }).observe(stage);
-  }
-  syncMotion();
+  reduceMotion.addEventListener('change', configureMotion);
+  window.addEventListener('scroll', () => { if (waitingForCover) launch(); }, { passive: true });
+  window.addEventListener('resize', () => { if (waitingForCover) launch(); });
+  cover.addEventListener('load', () => { if (waitingForCover) launch(); });
+  configureMotion();
 })();

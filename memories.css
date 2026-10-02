@@ -1,29 +1,23 @@
-/* Illustrated memories: contained to the cover, never across the reading copy. */
+/* A single translucent memory travels beyond the cover and across the page. */
 .cover-stage.has-memories { padding: 30px 48px 82px; isolation: isolate; }
 .cover-stage.has-memories > img { width: 100%; }
-.has-memories::before { content: ''; position: absolute; inset: 8% 0 15%; z-index: -1; border-radius: 50%; background: radial-gradient(ellipse,rgba(245,223,166,.8),rgba(220,189,127,.16) 52%,transparent 70%); }
-.memory-bubbles { position: absolute; inset: 0 0 65px; pointer-events: none; }
-.memory-bubble { --size: 92px; position: absolute; left: var(--x); top: var(--y); width: var(--size); height: var(--size); padding: 5px; border: 1px solid rgba(255,249,219,.85); border-radius: 50%; background: linear-gradient(140deg,rgba(255,254,236,.9),rgba(228,208,169,.2) 48%,rgba(137,178,169,.4)); box-shadow: inset 1px 1px 8px rgba(255,255,255,.85),inset -3px -3px 12px rgba(129,163,164,.3),0 7px 30px rgba(98,69,35,.18),0 0 24px rgba(255,244,210,.8); cursor: pointer; pointer-events: auto; animation: memory-drift var(--duration) var(--delay) ease-in-out infinite; transform-origin: center; touch-action: manipulation; }
-.cover-stage .memory-bubble img { position: static; display: block; width: 100%; height: 100%; max-width: none; max-height: none; aspect-ratio: 1; object-fit: cover; border-radius: 50%; filter: saturate(.78) sepia(.1); opacity: .86; clip-path: circle(50%); overflow: hidden; }
-.memory-bubble::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(ellipse at 29% 19%,rgba(255,255,255,.85),transparent 27%),linear-gradient(130deg,rgba(255,247,201,.28),transparent 47%,rgba(172,213,215,.22)); pointer-events: none; }
-.memory-bubble::after { content: ''; position: absolute; inset: -8px; border-radius: inherit; border: 1px solid rgba(214,160,74,0); pointer-events: none; }
-.memory-bubble:hover, .memory-bubble:focus-visible { animation-play-state: paused; z-index: 4; box-shadow: 0 0 0 4px rgba(255,248,222,.65),0 0 40px rgba(214,160,74,.5); }
-.memory-bubble:focus-visible { outline: 3px solid var(--green); outline-offset: 5px; animation: none; transform: none; opacity: 1; }
+.has-memories::before { content: ''; position: absolute; inset: 8% 0 15%; z-index: -1; border-radius: 50%; background: radial-gradient(ellipse,rgba(245,223,166,.6),rgba(220,189,127,.12) 52%,transparent 70%); }
+.memory-bubbles { position: fixed; inset: 0; z-index: 25; overflow: hidden; pointer-events: none; }
+.memory-bubble { --size: 136px; position: absolute; left: 0; top: 0; width: var(--size); height: var(--size); padding: 3px; border: 1px solid rgba(255,249,219,.65); border-radius: 50%; background: linear-gradient(140deg,rgba(255,254,236,.2),rgba(228,208,169,.03) 48%,rgba(137,178,169,.14)); box-shadow: inset 1px 1px 8px rgba(255,255,255,.65),inset -3px -3px 12px rgba(129,163,164,.2),0 7px 30px rgba(98,69,35,.08),0 0 24px rgba(255,244,210,.4); cursor: pointer; pointer-events: auto; transform-origin: center; touch-action: manipulation; will-change: transform,opacity; }
+.memory-bubble[hidden] { display: none; }
+.memory-bubble img { display: block; width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%; clip-path: circle(50%); overflow: hidden; }
+.memory-bubble::before { content: ''; position: absolute; z-index: 1; inset: 0; border-radius: inherit; background: radial-gradient(ellipse at 29% 19%,rgba(255,255,255,.75),transparent 27%),linear-gradient(130deg,rgba(255,247,201,.18),transparent 47%,rgba(172,213,215,.2)); pointer-events: none; }
+.memory-bubble::after { content: ''; position: absolute; inset: -8px; border-radius: inherit; border: 1px solid transparent; pointer-events: none; }
+.memory-bubble:hover { box-shadow: 0 0 0 3px rgba(255,248,222,.35),0 0 40px rgba(214,160,74,.3); }
+.memory-bubble:focus-visible { outline: 3px solid var(--green); outline-offset: 5px; }
 .memory-bubble.is-popping::after { animation: memory-pop .7s ease-out; }
-.memory-bubble-1 { --x: 0%; --y: 63%; --size: 88px; --sway: 8px; }
-.memory-bubble-2 { --x: 73%; --y: 61%; --size: 106px; --sway: -10px; }
-.memory-bubble-3 { --x: 0%; --y: 30%; --size: 96px; --sway: 12px; }
-.memory-bubble-4 { --x: 76%; --y: 27%; --size: 86px; --sway: -8px; }
-.memory-bubble-5 { --x: 20%; --y: 1%; --size: 78px; --sway: -8px; }
-.memory-bubble-6 { --x: 55%; --y: 5%; --size: 90px; --sway: 10px; }
-.memory-bubble-7 { --x: 26%; --y: 81%; --size: 72px; --sway: -6px; }
-.memory-bubble-8 { --x: 61%; --y: 82%; --size: 84px; --sway: 7px; }
 .memory-invitation { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; }
 .memory-invitation p { margin: 0 auto 5px; color: var(--green); font: italic 1.3rem/1.4 'Cormorant Garamond',serif; }
 .memory-pause { padding: 7px 12px; border: 0; background: transparent; color: #725944; font: .7rem/1.4 Inter,sans-serif; letter-spacing: .04em; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .memory-pause:focus-visible, .memory-close:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
-.memories-paused .memory-bubble { animation-play-state: paused; }
-@keyframes memory-drift { 0% { opacity: 0; transform: translate(var(--birth-x,0px),var(--birth-y,0px)) scale(.25); } 12% { opacity: .85; } 30% { opacity: 1; transform: translate(var(--sway),8px) scale(.95); } 55% { opacity: 1; transform: translate(0,-22px) scale(1.04); } 83% { opacity: .94; transform: translate(calc(var(--sway) * -1),-47px) scale(1); } 100% { opacity: 0; transform: translate(var(--sway),-75px) scale(.86); } }
+.memory-bubbles-static { position: absolute; inset: auto 0 70px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; overflow: visible; }
+.memory-bubbles-static .memory-bubble { position: relative; width: 58px; height: 58px; flex: 0 0 58px; will-change: auto; }
+.cover-stage .memory-bubble img { width: 100%; height: 100%; object-fit: cover; clip-path: circle(50%); filter: none; }
 @keyframes memory-pop { from { transform: scale(.9); border-color: rgba(255,242,198,.9); opacity: 1; } to { transform: scale(2); border-color: rgba(214,160,74,.1); opacity: 0; } }
 .memory-open { overflow: hidden; }
 .memory-dialog { width: min(580px,calc(100% - 28px)); max-height: calc(100dvh - 28px); padding: 0; border: 1px solid #d6bc87; border-radius: 14px; background: #fffaf0; color: var(--ink); overflow: auto; box-shadow: 0 25px 100px rgba(13,22,17,.45),0 0 50px rgba(255,229,175,.22); }
@@ -38,5 +32,5 @@
 .memory-order { padding: .85rem 1.5rem; }
 .memory-retailer { margin: 9px auto 0; font-size: .65rem; color: #735e4d; }
 @keyframes memory-unfold { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@media(max-width:760px) { .cover-stage.has-memories { width: min(440px,100%); justify-self: center; padding: 35px 52px 82px; } .memory-bubble { width: calc(var(--size) * .78); height: calc(var(--size) * .78); } .hero-grid:has(.has-memories) { padding-top: 30px; gap: 28px; } .memory-window { padding: 30px 16px 20px; } .memory-dialog h2 { font-size: 1.9rem; } }
-@media(prefers-reduced-motion:reduce) { .memory-bubble, .memory-dialog[open], .memory-bubble.is-popping::after { animation: none; } .memory-bubble { transform: none; } .memory-dialog::backdrop { backdrop-filter: none; } }
+@media(max-width:760px) { .cover-stage.has-memories { width: min(440px,100%); justify-self: center; padding: 35px 52px 82px; } .hero-grid:has(.has-memories) { padding-top: 30px; gap: 28px; } .memory-window { padding: 30px 16px 20px; } .memory-dialog h2 { font-size: 1.9rem; } }
+@media(prefers-reduced-motion:reduce) { .cover-stage.has-memories { padding-bottom: 210px; } .memory-dialog[open], .memory-bubble.is-popping::after { animation: none; } .memory-dialog::backdrop { backdrop-filter: none; } }
