@@ -22,8 +22,8 @@
   const bubbles = [];
   let manuallyPaused = false;
   let activeBubble = null;
-  let flight = null;
-  let reflection = null;
+  const animations = new Set();
+  let emergenceClock = null;
   let current = 0;
   let hovering = false;
   let focused = false;
@@ -32,7 +32,7 @@
 
   function syncMotion() {
     const stopped = manuallyPaused || document.hidden || dialog.open || hovering || focused;
-    [flight, reflection].forEach(animation => {
+    animations.forEach(animation => {
       if (animation) stopped ? animation.pause() : animation.play();
     });
     pause.setAttribute('aria-pressed', String(manuallyPaused || reduceMotion.matches));
@@ -80,7 +80,7 @@
   // Coordinates of the small illustrated bubbles printed on the book cover.
   const origins = [[.88,.33], [.14,.23], [.93,.20], [.19,.31], [.84,.14], [.11,.38], [.91,.40], [.22,.17]];
   function launch() {
-    if (reduceMotion.matches || flight) return;
+    if (reduceMotion.matches || emergenceClock) return;
     const rect = cover.getBoundingClientRect();
     const origin = origins[current];
     const x = rect.left + rect.width * origin[0];
@@ -101,29 +101,39 @@
     const endX = leftward ? -size * 1.6 : w + size * 1.6;
     const endY = h * [.18, .72, .12, .84][current % 4];
     const at = (cx, cy, scale) => `translate(${cx - size / 2}px, ${cy - size / 2}px) scale(${scale})`;
-    const duration = 32000;
+    const duration = 24000;
     const token = generation;
-    flight = bubble.animate([
-      { offset: 0, transform: at(x, y, .12), opacity: 0 },
-      { offset: .10, transform: at(x - 4, y - 7, .19), opacity: .10 },
-      { offset: .25, transform: at(x + (leftward ? -35 : 20), y - 32, .46), opacity: .30 },
-      { offset: .48, transform: at(w * (leftward ? .56 : .78), h * .37, .88), opacity: .72 },
+    const flight = bubble.animate([
+      { offset: 0, transform: at(x, y, .16), opacity: .08 },
+      { offset: .08, transform: at(x - 4, y - 7, .28), opacity: .20 },
+      { offset: .20, transform: at(x + (leftward ? -35 : 20), y - 32, .55), opacity: .42 },
+      { offset: 10 / 24, transform: at(w * (leftward ? .56 : .78), h * .37, 1), opacity: .94 },
       { offset: .72, transform: at(w * (leftward ? .25 : .94), h * (current % 2 ? .60 : .23), 1), opacity: .94 },
       { offset: 1, transform: at(endX, endY, 1.08), opacity: .85 }
-    ], { duration, delay: 1800, easing: 'linear', fill: 'both' });
-    reflection = bubble.querySelector('img').animate([
+    ], { duration, delay: 0, easing: 'linear', fill: 'both' });
+    const reflection = bubble.querySelector('img').animate([
       { offset: 0, opacity: .02, filter: 'saturate(.35) blur(3px)' },
-      { offset: .22, opacity: .10, filter: 'saturate(.45) blur(2px)' },
-      { offset: .55, opacity: .72, filter: 'saturate(.8) blur(0px)' },
+      { offset: .12, opacity: .15, filter: 'saturate(.45) blur(2px)' },
+      { offset: 10 / 24, opacity: .9, filter: 'saturate(.8) blur(0px)' },
       { offset: 1, opacity: .9, filter: 'saturate(.9) blur(0px)' }
-    ], { duration, delay: 1800, easing: 'ease-in-out', fill: 'both' });
+    ], { duration, delay: 0, easing: 'ease-in-out', fill: 'both' });
     flight.onfinish = () => {
       if (token !== generation) return;
       bubble.hidden = true;
       flight.cancel(); reflection.cancel();
-      flight = reflection = null;
-      current = (current + 1) % memories.length;
-      hovering = focused = false;
+      animations.delete(flight); animations.delete(reflection);
+    };
+    animations.add(flight);
+    animations.add(reflection);
+    current = (current + 1) % memories.length;
+    // Use an animation clock so the ten-second cadence pauses with the scenes.
+    emergenceClock = field.animate([], { duration: 10000 });
+    animations.add(emergenceClock);
+    emergenceClock.onfinish = () => {
+      if (token !== generation) return;
+      animations.delete(emergenceClock);
+      emergenceClock.cancel();
+      emergenceClock = null;
       launch();
     };
     syncMotion();
@@ -131,8 +141,9 @@
 
   function configureMotion() {
     generation++;
-    flight?.cancel(); reflection?.cancel();
-    flight = reflection = null;
+    animations.forEach(animation => animation.cancel());
+    animations.clear();
+    emergenceClock = null;
     hovering = focused = false;
     field.classList.toggle('memory-bubbles-static', reduceMotion.matches);
     if (reduceMotion.matches) {
